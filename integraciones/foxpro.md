@@ -1,3 +1,13 @@
+---
+title: foxpro
+description: 
+published: true
+date: 2026-07-09T18:54:50.782Z
+tags: 
+editor: markdown
+dateCreated: 2026-07-09T18:54:45.994Z
+---
+
 # Documentación técnica: Generación de JSON desde FoxPro para sincronización de datos
 
 ## 1. Objetivo
