@@ -1,10 +1,12 @@
 # Operación 4: ejecutar una regla de consulta puntual
 
+El modelo de datos sugerido para implementar esta operación está disponible en [Modelo `query_reglas` adaptado para VSM](../../modelo-datos/query-reglas-vsm.md).
+
 ## Objetivo
 
 La operación `"4"` ejecuta una sola regla de consulta previamente configurada y devuelve únicamente su resultado.
 
-FoxPro envía el código de la regla y sus parámetros. El servicio obtiene internamente `query_dato` y `tipo_dato`. FoxPro no envía SQL ni decide cómo interpretar la respuesta.
+FoxPro envía el código de la regla y sus parámetros. El servicio obtiene internamente `consulta` y `tipo_resultado` desde `query_reglas`. FoxPro no envía SQL ni decide cómo interpretar la respuesta.
 
 Esta operación es únicamente de lectura. No inserta, actualiza ni elimina información.
 
@@ -13,7 +15,7 @@ Esta operación es únicamente de lectura. No inserta, actualiza ni elimina info
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "EMPLEADO_NOMBRE",
@@ -27,7 +29,7 @@ Esta operación es únicamente de lectura. No inserta, actualiza ni elimina info
 | Campo | Descripción |
 |---|---|
 | `operacion` | Siempre debe ser `"4"`. |
-| `tabla` | Para el modelo actual se usa `nreglas`. |
+| `tabla` | Para VSM se usa `query_reglas`. |
 | `nit_empresa` | Empresa para la cual se ejecutará la consulta. |
 | `campos.codigo_query` | Código estable de la regla que se ejecutará. |
 | `campos` | Además de `codigo_query`, contiene los parámetros requeridos por la consulta. |
@@ -40,28 +42,28 @@ La regla identificada debe contener como mínimo:
 
 ```json
 {
-  "codigo_query": "EMPLEADO_NOMBRE",
-  "nom_tag": "nombreEmpleado",
-  "tipo_dato": "Q",
-  "query_dato": "SELECT nombre FROM empleado WHERE nit_empresa = :nit_empresa AND codigo = :codigo",
-  "ind_habilita": 1
+  "codigo": "EMPLEADO_NOMBRE",
+  "nombre_salida": "nombreEmpleado",
+  "tipo_resultado": "Q",
+  "consulta": "SELECT nombre FROM empleado WHERE nit_empresa = :nit_empresa AND codigo = :codigo",
+  "activo": 1
 }
 ```
 
-Si `nreglas` aún no tiene `codigo_query`, puede localizarse inicialmente por `id`. Para integrar FoxPro se recomienda un código funcional estable, porque el `id` puede cambiar entre ambientes.
+El valor externo `campos.codigo_query` se compara con `query_reglas.codigo`. Se recomienda un código funcional estable porque el `id` interno puede cambiar entre ambientes.
 
 ## Flujo de ejecución
 
 1. Validar que `operacion` sea `"4"`.
 2. Leer `codigo_query` desde `campos`.
 3. Buscar una única regla habilitada con ese código.
-4. Obtener `query_dato` y `tipo_dato` desde la regla.
+4. Obtener `consulta` y `tipo_resultado` desde la regla.
 5. Combinar `nit_empresa` con los demás valores de `campos`.
 6. Retirar `codigo_query` de los parámetros.
-7. Aplicar `solveParams()` para conservar solo los parámetros usados en `query_dato`.
+7. Aplicar la lógica de `solveParams()` para conservar solo los parámetros usados en `consulta`.
 8. Validar que no falte ningún parámetro requerido.
 9. Ejecutar únicamente esa regla.
-10. Transformar y devolver el resultado según `tipo_dato`.
+10. Transformar el resultado según `tipo_resultado` y devolverlo como `tipo_dato` en el contrato público.
 
 No se ejecutan otras reglas y no se llama a `armarElementosHijoPadre()`.
 
@@ -72,7 +74,7 @@ Entrada:
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "EMPLEADO_NOMBRE",
@@ -116,14 +118,14 @@ El cliente no envía `tipo_dato`. El servicio lo obtiene de la regla.
 
 ## Tipo `F`: valor fijo
 
-No ejecuta SQL. Devuelve directamente el contenido de `query_dato`.
+No ejecuta SQL. Devuelve directamente el contenido de `consulta`.
 
 ### Entrada completa
 
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "AMBIENTE_ACTUAL"
@@ -150,7 +152,7 @@ Ejecuta la consulta y devuelve el primer campo de la primera fila.
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "EMPLEADO_NOMBRE",
@@ -178,7 +180,7 @@ Ejecuta la consulta y devuelve todas las filas conservando el nombre de las colu
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "EMPLEADO_CONCEPTOS",
@@ -215,7 +217,7 @@ Ejecuta la consulta y devuelve como arreglo los valores de todas las columnas de
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "CONCEPTO_DATOS",
@@ -246,7 +248,7 @@ Ejecuta la consulta y devuelve el primer valor de cada fila.
 ```json
 {
   "operacion": "4",
-  "tabla": "nreglas",
+  "tabla": "query_reglas",
   "nit_empresa": "123456",
   "campos": {
     "codigo_query": "CONCEPTOS_CODIGOS"
@@ -283,7 +285,7 @@ Ejecuta la consulta y devuelve el primer valor de cada fila.
 
 - `codigo_query` es obligatorio para la operación `"4"`.
 - Solo puede encontrarse una regla habilitada por código.
-- FoxPro no envía `query_dato` ni `tipo_dato`.
+- FoxPro no envía `consulta` ni `tipo_resultado`.
 - FoxPro no envía SQL.
 - `codigo_query` se retira antes de resolver los parámetros.
 - Los valores se enlazan mediante parámetros nombrados.
@@ -293,4 +295,3 @@ Ejecuta la consulta y devuelve el primer valor de cada fila.
 - Se admiten únicamente los tipos `F`, `Q`, `A`, `B` y `C`.
 - La operación no ejecuta el árbol completo de reglas.
 - La operación no modifica información.
-
