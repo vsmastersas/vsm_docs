@@ -32,17 +32,18 @@ La estructura conserva los campos base definidos originalmente:
 | `"1"` | Insertar | [01 - Insertar](./foxpro/01-insertar.md) |
 | `"2"` | Actualizar | [02 - Actualizar](./foxpro/02-actualizar.md) |
 | `"3"` | Eliminar | [03 - Eliminar](./foxpro/03-eliminar.md) |
+| `"4"` | Ejecutar reglas de consulta | [04 - Reglas de query](./foxpro/04-reglas-query.md) |
 
-La lógica reutilizable de consultas y parámetros está documentada en [04 - Reglas de query](./foxpro/04-reglas-query.md).
+La operación `"4"` reutiliza el modelo existente de reglas únicamente para consultar y construir respuestas. No modifica información.
 
 ## Campos base
 
 | Campo | Descripción |
 |---|---|
-| `operacion` | `"1"`, `"2"` o `"3"`. |
+| `operacion` | `"1"`, `"2"`, `"3"` o `"4"`. |
 | `tabla` | Tabla sobre la cual se ejecutará la operación. |
 | `nit_empresa` | Empresa a la cual pertenecen los registros. Es obligatorio. |
-| `campos` | Datos que se insertan o actualizan. En operaciones múltiples es un arreglo. |
+| `campos` | Datos de insert/update o parámetros de consulta cuando la operación es `"4"`. |
 | `camposllave` | Criterio utilizado para actualizar o eliminar. |
 
 ## Reglas generales
