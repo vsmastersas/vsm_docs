@@ -5,3 +5,4 @@ Esta carpeta contiene los modelos de datos propuestos para implementar las opera
 ## Modelos disponibles
 
 - [Modelo `query_reglas` adaptado para VSM](./query-reglas-vsm.md)
+- [Estructura general del sistema](./estructura-general-sistema.md)
