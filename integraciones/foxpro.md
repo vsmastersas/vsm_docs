@@ -27,6 +27,8 @@ La estructura conserva los campos base definidos originalmente:
 
 ## Tipo de operación
 
+Los comandos disponibles para probar cada escenario están centralizados en [Ejemplos cURL de la integración FoxPro](./foxpro/curls.md).
+
 | Valor | Operación | Documentación |
 |---|---|---|
 | `"1"` | Insertar | [01 - Insertar](./foxpro/01-insertar.md) |
