@@ -91,8 +91,10 @@ La visibilidad de cada acción se parametriza directamente en `vmcatalogo`:
 | `icono_editar` | Icono de Editar. |
 | `icono_eliminar` | Icono de Eliminar. |
 | `icono_exportar` | Icono de Exportar. |
+| `vista_mobile` | Define la visualización mobile: `table` para tabla con scroll horizontal o `cards` para tarjetas por fila. |
 
 Un valor `0` en `permite_*` oculta o deshabilita la capacidad correspondiente; un valor `1` la habilita.
+`vista_mobile` no cambia desktop; solo afecta pantallas pequeñas.
 
 ## 4. Configuración exacta de Cargos
 
@@ -134,6 +136,7 @@ INSERT INTO vmcatalogo (
   codigo,
   titulo,
   tabla,
+  vista_mobile,
   id_menu,
   orden_campo,
   orden_direccion,
@@ -148,6 +151,7 @@ VALUES (
   'CAT_NCARGO',
   'Cargos',
   'ncargo',
+  'table',
   15,
   'codca',
   'asc',
@@ -156,6 +160,7 @@ VALUES (
 ON DUPLICATE KEY UPDATE
   titulo = VALUES(titulo),
   tabla = VALUES(tabla),
+  vista_mobile = VALUES(vista_mobile),
   id_menu = VALUES(id_menu),
   orden_campo = VALUES(orden_campo),
   orden_direccion = VALUES(orden_direccion),
@@ -356,4 +361,3 @@ LIMIT 20;
 - `vsm_web_backend/sql/011_catalogos_creacion_relacion.sql`: creación parametrizable de registros relacionados.
 - `vsm_web_backend/sql/015_empresas_sucursales_usuario.sql`: empresas, sucursales y asignación por usuario.
 - `vsm_web_backend/sql/manual/vsmauditoria.sql`: tabla de auditoría.
-
