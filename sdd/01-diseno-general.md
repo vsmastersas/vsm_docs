@@ -35,6 +35,23 @@ Navegador
 - La configuración de procesos, campos, eventos, grillas y acciones se almacena en JSON dentro del modelo IARK.
 - El esquema de tablas se mantiene en `storage/schema.json` y se refresca mediante `/api/schema/refresh`.
 
+## Norma obligatoria de parametrización
+
+El ERP debe operar bajo una regla 100% obligatoria y no negociable: las reglas de negocio no se queman en el código de una pantalla ni en endpoints específicos. La base de datos y el modelo IARK son la fuente de parametrización para:
+
+- opciones y estados de controles;
+- validaciones y valores por defecto;
+- relaciones y bindings;
+- acciones y sus parámetros;
+- eventos y refrescos dependientes;
+- consultas, filtros y columnas visibles;
+- cálculos declarativos y fórmulas;
+- visibilidad, permisos y navegación.
+
+Frontend y backend solo deben aportar el motor genérico que interpreta esa configuración, controles técnicos comunes, seguridad, autorización, límites de ejecución y contratos HTTP. Una excepción debe ser exclusivamente técnica, no contener lógica de negocio, y quedar registrada con justificación, alcance y pruebas.
+
+Una implementación no cumple el SDD si agrega un `if`, `switch`, catálogo de opciones, nombre de acción, binding, filtro, cálculo o flujo específico de un proceso directamente en React, Flask o una migración de datos de negocio cuando ese comportamiento puede declararse en BD.
+
 ## Flujo principal de navegación
 
 1. El usuario inicia sesión.

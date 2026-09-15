@@ -25,6 +25,17 @@
 4. Separar explícitamente exportación de página visible frente a exportación completa filtrada.
 5. Definir un contrato formal para consultas custom con filtros, columnas, paginación y exportación.
 
+## Criterio de aceptación no negociable
+
+Toda nueva pantalla o proceso debe demostrar en su revisión que sus reglas de negocio están parametrizadas en BD. La evidencia mínima es:
+
+1. SQL de parametrización para menú, proceso, fuentes, controles, eventos y acciones.
+2. Bindings declarados y consultas sin valores de negocio quemados.
+3. Código limitado a capacidades genéricas reutilizables.
+4. Prueba de que la modificación de una opción o regla no exige recompilar frontend/backend.
+
+Si una capacidad no puede cumplir este criterio, el trabajo queda incompleto hasta ampliar el motor dinámico o documentar una excepción técnica aprobada.
+
 ## Nota de exactitud
 
 Este paquete documenta el comportamiento del código fuente; no sustituye la validación de configuración activa, variables de entorno, permisos reales, datos de producción ni infraestructura desplegada.

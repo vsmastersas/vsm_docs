@@ -1,5 +1,21 @@
 # 4. Modelo de datos y parametrización
 
+## Regla de cumplimiento obligatoria
+
+Toda lógica de negocio debe ser parametrizable y administrable desde la base de datos. No es negociable quemar en el frontend o backend opciones, reglas, acciones, eventos, bindings, filtros, cálculos, relaciones o decisiones de flujo pertenecientes a un proceso.
+
+La parametrización debe cubrir, como mínimo:
+
+- controles y opciones (`iak_tipo_control` y configuración del proceso);
+- eventos y acciones declarativas;
+- consultas y parámetros (`query_reglas`);
+- fuentes de datos, relaciones y bindings;
+- columnas visibles y campos técnicos;
+- fórmulas, validaciones y condiciones;
+- menú, ruta y permisos.
+
+El código solo puede contener el comportamiento genérico del motor, validaciones de seguridad, autorización, protección contra SQL inseguro y manejo técnico de errores. Si una capacidad no existe en el motor, primero debe ampliarse el contrato genérico; no se permite resolverla con lógica específica de una pantalla.
+
 ## Familias de configuración
 
 - Catálogos: `vmcatalogo`, `vmcatalogo_campo` y tablas relacionadas.
